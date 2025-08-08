@@ -2,6 +2,7 @@
 Developed a responsive, role-based project and task management system using Django, MySQL, and Bootstrap. This system enables admins and managers to assign tasks to users, track project progress, and automate status updates based on task completion.
 
 ⚙️ Key Features:
+
 User Authentication (Register/Login/Logout)
 
 Role-Based Access (Admin, Manager, Employee)
@@ -23,6 +24,7 @@ Test Coverage using Django’s test framework
 Modular Code Structure following MVC principles
 
 🛠️ Tech Stack:
+
 Backend: Django, Python, MySQL
 
 Frontend: Bootstrap 5, HTML5, AJAX (Vanilla JS)
