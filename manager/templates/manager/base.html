@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Management</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+/* Desktop-only hover dropdown */
+@media (min-width: 992px) {
+  .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+}
+
+/* Smooth dropdown effect */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(5px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Toast Container -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+  <div id="liveToast" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+      <strong class="me-auto">✅ Success</strong>
+      <button type="button" class="btn-close btn-close-white ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toast-body">
+      Action completed successfully!
+    </div>
+  </div>
+</div>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="{% url 'project_list' %}">🛠️ Project Manager</a>
+    
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+
+        {% if user.is_authenticated %}
+          <!-- Role-specific navigation -->
+          {% if user.groups.all.0.name == 'Admin' %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'project_list' %}">📂 Admin Panel</a></li>
+          {% elif user.groups.all.0.name == 'Manager' %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'project_list' %}">📋 Manage Projects</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">📌 My Tasks</a></li>
+          {% endif %}
+
+          <!-- Projects Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-bs-toggle="dropdown">
+              📁 Projects
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'project_list' %}">📋 All Projects</a></li>
+            </ul>
+          </li>
+
+          <!-- Tasks Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
+              📝 Tasks
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'task_list' %}">📄 All Tasks</a></li>
+            </ul>
+          </li>
+
+          <!-- Logout -->
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">🚪 Logout</a></li>
+
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">🔐 Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">🧾 Register</a></li>
+        {% endif %}
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  function showToast(message) {
+  document.getElementById('toast-body').innerText = message;
+  const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+  toast.show();
+}
+</script>
+
+</body>
+</html>
